@@ -1,4 +1,7 @@
+[![GoDoc](https://godoc.org/github.com/dlasky/go-wallhaven?status.svg)](https://godoc.org/github.com/dlasky/go-wallhaven)
+
 # go-wallhaven
+
 golang wrapper for the wallhaven.cc api
 
 ## Installation
@@ -13,4 +16,4 @@ if err != nil {
   log.Fatal(err)
 }
 log.Printf("%v", results)
-  ```
+```
