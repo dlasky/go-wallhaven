@@ -5,21 +5,8 @@ import (
 	"net/url"
 )
 
-type UserInfo struct {
-	Data struct {
-		ThumbSize     string   `json:"thumb_size"`
-		PerPage       string   `json:"per_page"`
-		Purity        []string `json:"purity"`
-		Categories    []string `json:"categories"`
-		Resolutions   []string `json:"resolutions"`
-		AspectRatios  []string `json:"aspect_ratios"`
-		ToplistRange  string   `json:"toplist_range"`
-		TagBlacklist  []string `json:"tag_blacklist"`
-		UserBlacklist []string `json:"user_blacklist"`
-	} `json:"data"`
-}
-
-func GetUserSettings(apiKey string) (*UserInfo, error) {
+//GetUserSettings returns user preferences for the current logged in user. This method requires an API key
+func GetUserSettings(apiKey string) (*User, error) {
 	u, _ := url.Parse(getWithBase("/settings"))
 	q := u.Query()
 	q.Add("apiKey", apiKey)
@@ -28,7 +15,7 @@ func GetUserSettings(apiKey string) (*UserInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	info := &UserInfo{}
+	info := &UserResult{}
 	processResponse(resp, info)
-	return info, nil
+	return &info.Data, nil
 }

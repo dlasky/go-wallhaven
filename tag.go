@@ -1,13 +1,12 @@
 package wallhaven
 
-import "strconv"
-
-type TagID int64
-
-func (t TagID) String() string {
-	return strconv.Itoa(int(t))
-}
-
-func GetTagInfo(t TagID) {
-	getWithBase("/tag/"+string(t))
+//GetTagInfo returns metadata regarding a single tag when given its int ID
+func GetTagInfo(t TagID) (*Tag, error) {
+	resp, err := get("/tag/" + string(t))
+	if err != nil {
+		return nil, err
+	}
+	res := &TagResult{}
+	processResponse(resp, res)
+	return &res.Data, nil
 }

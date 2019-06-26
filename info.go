@@ -1,17 +1,15 @@
 package wallhaven
 
-import "net/http"
-
-func GetWallpaperInfo(id WallpaperID) (*WallpaperInfo, error) {
-
-	resp, err := http.Get(getWithBase("/w/" + string(id)))
+//GetWallpaperInfo returns a single wallpaper's data given its ID
+func GetWallpaperInfo(id WallpaperID) (*Wallpaper, error) {
+	resp, err := get("/w/" + string(id))
 	if err != nil {
 		return nil, err
 	}
-	info := &WallpaperInfo{}
+	info := &WallpaperResult{}
 	err = processResponse(resp, info)
 	if err != nil {
 		return nil, err
 	}
-	return info, nil
+	return &info.Data, nil
 }

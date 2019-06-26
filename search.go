@@ -2,7 +2,6 @@ package wallhaven
 
 import (
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -204,10 +203,7 @@ func (s Search) toQuery() url.Values {
 
 func SearchWallpapers(search *Search) (*SearchResults, error) {
 
-	resp, err := http.Get(getWithBase("/search/"))
-	if err != nil {
-		return nil, err
-	}
+	resp, err := getWithValues("/search/", search.toQuery())
 	out := &SearchResults{}
 	err = processResponse(resp, out)
 	if err != nil {
