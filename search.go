@@ -9,8 +9,10 @@ import (
 
 // Search Types
 
+//Category is an enum used to represent wallpaper categories
 type Category int
 
+//Enum for Category Types
 const (
 	General Category = 0x100
 	Anime   Category = 0x010
@@ -21,8 +23,10 @@ func (c Category) String() string {
 	return strconv.FormatInt(int64(c), 2)
 }
 
+//Purity is an enum used to represent
 type Purity int
 
+//Enum for purity types
 const (
 	SFW     Purity = 0x100
 	Sketchy Purity = 0x010
@@ -33,8 +37,10 @@ func (p Purity) String() string {
 	return strconv.FormatInt(int64(p), 2)
 }
 
+//Sort enum specifies the various sort types accepted by WH api
 type Sort int
 
+//Sort Enum Values
 const (
 	DateAdded Sort = iota + 1
 	Relevance
@@ -49,8 +55,10 @@ func (s Sort) String() string {
 	return str[s]
 }
 
+//Order enum specifies the sort orders accepted by WH api
 type Order int
 
+//Sort Enum Values
 const (
 	Desc Order = iota + 1
 	Asc
@@ -61,8 +69,10 @@ func (o Order) String() string {
 	return str[o]
 }
 
+//TopRange is used to specify the time window for 'top' result when topList is chosen as sort param
 type TopRange int
 
+//Enum for TopRange values
 const (
 	Day TopRange = iota + 1
 	ThreeDay
@@ -77,6 +87,7 @@ func (t TopRange) String() string {
 	return str[t]
 }
 
+//Resolution specifies the image resolution to find
 type Resolution struct {
 	Width  int64
 	Height int64
@@ -90,6 +101,7 @@ func (r Resolution) isValid() bool {
 	return r.Width > 0 && r.Height > 0
 }
 
+//Ratio may be used to specify the aspect ratio of the search
 type Ratio struct {
 	Vertical   int64
 	Horizontal int64
@@ -103,6 +115,7 @@ func (r Ratio) isValid() bool {
 	return r.Vertical > 0 && r.Horizontal > 0
 }
 
+//Q is used to hold the Q params for various fulltext options that the WH Search supports
 type Q struct {
 	Tags       []string
 	ExcudeTags []string
@@ -112,7 +125,7 @@ type Q struct {
 	Like       WallpaperID
 }
 
-func (q Q) ToQuery() url.Values {
+func (q Q) toQuery() url.Values {
 	var sb strings.Builder
 	for _, tag := range q.Tags {
 		sb.WriteString("+")
@@ -154,7 +167,7 @@ type Search struct {
 }
 
 func (s Search) toQuery() url.Values {
-	v := s.Query.ToQuery()
+	v := s.Query.toQuery()
 	if s.Categories > 0 {
 		v.Add("categories", s.Categories.String())
 	}
@@ -201,6 +214,9 @@ func (s Search) toQuery() url.Values {
 	return v
 }
 
+//SearchWallpapers performs a search on WH given a set of criteria.
+//Note that this API behaves slightly differently than the various
+//single item apis as it also includes the metadata for paging purposes
 func SearchWallpapers(search *Search) (*SearchResults, error) {
 
 	resp, err := getWithValues("/search/", search.toQuery())

@@ -39,7 +39,11 @@ func getWithValues(p string, v url.Values) (*http.Response, error) {
 		return nil, err
 	}
 	u.RawQuery = v.Encode()
-	req, err := http.NewRequest("GET", u.String(), nil)
+	return getAuthedResponse(u.String())
+}
+
+func getAuthedResponse(url string) (*http.Response, error) {
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}

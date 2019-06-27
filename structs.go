@@ -40,26 +40,35 @@ type Tag struct {
 
 //Wallpaper information about a given wallpaper
 type Wallpaper struct {
-	ID         string   `json:"id"`
-	URL        string   `json:"url"`
-	ShortURL   string   `json:"short_url"`
-	Uploader   Uploader `json:"uploader"`
-	Views      int      `json:"views"`
-	Favorites  int      `json:"favorites"`
-	Source     string   `json:"source"`
-	Purity     string   `json:"purity"`
-	Category   string   `json:"category"`
-	DimensionX int      `json:"dimension_x"`
-	DimensionY int      `json:"dimension_y"`
-	Resolution string   `json:"resolution"`
-	Ratio      string   `json:"ratio"`
-	FileSize   int      `json:"file_size"`
-	FileType   string   `json:"file_type"`
-	CreatedAt  string   `json:"created_at"`
-	Colors     []string `json:"colors"`
-	Path       string   `json:"path"`
-	Thumbs     Thumbs   `json:"thumbs"`
-	Tags       []Tag    `json:"tags"`
+	ID         WallpaperID `json:"id"`
+	URL        string      `json:"url"`
+	ShortURL   string      `json:"short_url"`
+	Uploader   Uploader    `json:"uploader"`
+	Views      int         `json:"views"`
+	Favorites  int         `json:"favorites"`
+	Source     string      `json:"source"`
+	Purity     string      `json:"purity"`
+	Category   string      `json:"category"`
+	DimensionX int         `json:"dimension_x"`
+	DimensionY int         `json:"dimension_y"`
+	Resolution string      `json:"resolution"`
+	Ratio      string      `json:"ratio"`
+	FileSize   int         `json:"file_size"`
+	FileType   string      `json:"file_type"`
+	CreatedAt  string      `json:"created_at"`
+	Colors     []string    `json:"colors"`
+	Path       string      `json:"path"`
+	Thumbs     Thumbs      `json:"thumbs"`
+	Tags       []Tag       `json:"tags"`
+}
+
+//Download downloads a wallpaper given the local filepath to save the wallpaper to
+func (w *Wallpaper) Download(filepath string) error {
+	resp, err := getAuthedResponse(w.URL)
+	if err != nil {
+		return err
+	}
+	return download(filepath, resp)
 }
 
 //Thumbs paths for thumbnail images of wallpaper
@@ -68,6 +77,8 @@ type Thumbs struct {
 	Original string `json:"original"`
 	Small    string `json:"small"`
 }
+
+//TODO: (dlasky) add download support for thumbs
 
 //Meta paging and stats metadata for search results
 type Meta struct {
