@@ -67,7 +67,7 @@ type Wallpaper struct {
 
 //Download downloads a wallpaper given the local filepath to save the wallpaper to
 func (w *Wallpaper) Download(filepath string) error {
-	resp, err := getAuthedResponse(w.URL)
+	resp, err := getAuthedResponse(w.Path)
 	if err != nil {
 		return err
 	}
