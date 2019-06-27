@@ -71,7 +71,7 @@ func (w *Wallpaper) Download(filepath string) error {
 	if err != nil {
 		return err
 	}
-	path := filepath.Join(dir, path.Base(url))
+	path := filepath.Join(dir, path.Base(w.Path))
 	return download(path, resp)
 }
 
