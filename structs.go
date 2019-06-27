@@ -1,6 +1,9 @@
 package wallhaven
 
-import "strconv"
+import (
+	"path"
+	"strconv"
+)
 
 //WallpaperID is a string representing a wallpaper
 type WallpaperID string
@@ -68,7 +71,8 @@ func (w *Wallpaper) Download(filepath string) error {
 	if err != nil {
 		return err
 	}
-	return download(filepath, resp)
+	path := filepath.Join(dir, path.Base(url))
+	return download(path, resp)
 }
 
 //Thumbs paths for thumbnail images of wallpaper
