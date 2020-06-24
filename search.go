@@ -108,7 +108,7 @@ type Ratio struct {
 }
 
 func (r Ratio) String() string {
-	return fmt.Sprintf("%vx%v", r.Vertical, r.Horizontal)
+	return fmt.Sprintf("%vx%v", r.Horizontal, r.Vertical)
 }
 
 func (r Ratio) isValid() bool {
