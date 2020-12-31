@@ -108,7 +108,7 @@ type Ratio struct {
 }
 
 func (r Ratio) String() string {
-	return fmt.Sprintf("%vx%v", r.Vertical, r.Horizontal)
+	return fmt.Sprintf("%vx%v", r.Horizontal, r.Vertical)
 }
 
 func (r Ratio) isValid() bool {
@@ -210,6 +210,9 @@ func (s Search) toQuery() url.Values {
 	}
 	if len(s.Colors) > 0 {
 		v.Add("colors", strings.Join([]string(s.Colors), ","))
+	}
+	if s.Page > 0 {
+		v.Add("page", strconv.Itoa(s.Page))
 	}
 	return v
 }
