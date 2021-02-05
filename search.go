@@ -163,7 +163,7 @@ type Search struct {
 	Resolutions []Resolution
 	Ratios      []Ratio
 	Colors      []string //Colors is an array of hex colors represented as strings in #RRGGBB format
-	Page        int64
+	Page        int
 }
 
 func (s Search) toQuery() url.Values {
@@ -210,6 +210,9 @@ func (s Search) toQuery() url.Values {
 	}
 	if len(s.Colors) > 0 {
 		v.Add("colors", strings.Join([]string(s.Colors), ","))
+	}
+	if s.Page > 0 {
+		v.Add("page", strconv.Itoa(s.Page))
 	}
 	return v
 }
