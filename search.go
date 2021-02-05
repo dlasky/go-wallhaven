@@ -103,8 +103,8 @@ func (r Resolution) isValid() bool {
 
 //Ratio may be used to specify the aspect ratio of the search
 type Ratio struct {
-	Vertical   int64
-	Horizontal int64
+	Horizontal int
+	Vertical   int
 }
 
 func (r Ratio) String() string {
