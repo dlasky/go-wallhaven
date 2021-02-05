@@ -2,7 +2,6 @@ package wallhaven
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -15,7 +14,6 @@ func processResponse(resp *http.Response, out interface{}) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%s", byt)
 	resp.Body.Close()
 	return json.Unmarshal(byt, out)
 
