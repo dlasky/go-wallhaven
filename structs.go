@@ -6,17 +6,20 @@ import (
 	"strconv"
 )
 
-//WallpaperID is a string representing a wallpaper
+// WallpaperID is a string representing a wallpaper
 type WallpaperID string
 
-//TagID is an int representing a tag on wh
+// TagID is an int representing a tag on wh
 type TagID int64
 
 func (t TagID) String() string {
 	return strconv.Itoa(int(t))
 }
 
-//Avatar user's avatar
+// CollectionID is a string representing a Collection
+type CollectionID string
+
+// Avatar user's avatar
 type Avatar struct {
 	Two00Px  string `json:"200px"`
 	One28Px  string `json:"128px"`
@@ -24,14 +27,14 @@ type Avatar struct {
 	Two0Px   string `json:"20px"`
 }
 
-//Uploader information on who uploaded a given wallpaper
+// Uploader information on who uploaded a given wallpaper
 type Uploader struct {
 	Username string `json:"username"`
 	Group    string `json:"group"`
 	Avatar   Avatar `json:"avatar"`
 }
 
-//Tag full data on a given wallpaper tag
+// Tag full data on a given wallpaper tag
 type Tag struct {
 	ID         int    `json:"id"`
 	Name       string `json:"name"`
@@ -42,7 +45,7 @@ type Tag struct {
 	CreatedAt  string `json:"created_at"`
 }
 
-//Wallpaper information about a given wallpaper
+// Wallpaper information about a given wallpaper
 type Wallpaper struct {
 	ID         WallpaperID `json:"id"`
 	URL        string      `json:"url"`
@@ -66,7 +69,7 @@ type Wallpaper struct {
 	Tags       []Tag       `json:"tags"`
 }
 
-//Download downloads a wallpaper given the local filepath to save the wallpaper to
+// Download downloads a wallpaper given the local filepath to save the wallpaper to
 func (w *Wallpaper) Download(dir string) error {
 	resp, err := getAuthedResponse(w.Path)
 	if err != nil {
@@ -76,7 +79,7 @@ func (w *Wallpaper) Download(dir string) error {
 	return download(path, resp)
 }
 
-//Thumbs paths for thumbnail images of wallpaper
+// Thumbs paths for thumbnail images of wallpaper
 type Thumbs struct {
 	Large    string `json:"large"`
 	Original string `json:"original"`
@@ -85,7 +88,7 @@ type Thumbs struct {
 
 //TODO: (dlasky) add download support for thumbs
 
-//Meta paging and stats metadata for search results
+// Meta paging and stats metadata for search results
 type Meta struct {
 	CurrentPage int         `json:"current_page"`
 	LastPage    int         `json:"last_page"`
@@ -94,7 +97,7 @@ type Meta struct {
 	Query       interface{} `json:"query"`
 }
 
-//User User preference Data (set on wallhaven's user GUI)
+// User User preference Data (set on wallhaven's user GUI)
 type User struct {
 	ThumbSize     string   `json:"thumb_size"`
 	PerPage       string   `json:"per_page"`
@@ -107,25 +110,44 @@ type User struct {
 	UserBlacklist []string `json:"user_blacklist"`
 }
 
+type Collection struct {
+	ID      CollectionID `json:"id"`
+	Label   string       `json:"label"`
+	Views   string       `json:"views"`
+	Privacy Privacy      `json:"public"`
+	Count   int          `json:"count"`
+}
+
 //Result Structs -- server responses
 
-//SearchResults a wrapper containing search results from wh
+// SearchResults a wrapper containing search results from wh
 type SearchResults struct {
 	Data []Wallpaper `json:"data"`
 	Meta Meta        `json:"meta"`
 }
 
-//TagResult a wrapper containing a single tag result when TagInfo is requested
+// TagResult a wrapper containing a single tag result when TagInfo is requested
 type TagResult struct {
 	Data Tag `json:"data"`
 }
 
-//UserResult a wrapper containing user preference data
+// UserResult a wrapper containing user preference data
 type UserResult struct {
 	Data User `json:"data"`
 }
 
-//WallpaperResult a wrapper containing a single wallpaper result when WallpaperInfo is requested
+// WallpaperResult a wrapper containing a single wallpaper result when WallpaperInfo is requested
 type WallpaperResult struct {
 	Data Wallpaper `json:"data"`
+}
+
+// CollectionsResult a wrapper containing an array of user's collection.
+type CollectionsResult struct {
+	Data []Collection `json:"data"`
+}
+
+// CollectionWallpapersResult a wrapper containing the list of wallpapers for a given user's collection and its Metadata.
+type CollectionWallpapersResult struct {
+	Data []Wallpaper `json:"data"`
+	Meta Meta        `json:"meta"`
 }
