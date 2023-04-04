@@ -2,7 +2,7 @@
 
 # go-wallhaven
 
-golang wrapper for the wallhaven.cc api
+golang wrapper for the wallhaven.cc api version 1
 
 ## Installation
 
